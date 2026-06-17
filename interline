@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automatizadora Interline — Automação e Segurança Eletrônica</title>
+<meta name="description" content="Instalação de câmeras de segurança, portões automáticos, cerca elétrica e reconhecimento facial. Projeto, instalação e suporte completo em automação e segurança eletrônica.">
+<meta name="theme-color" content="#0A0F1A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg-deep:#0A0F1A;
+  --bg-panel:#111A2B;
+  --bg-panel-2:#16213A;
+  --line: rgba(255,255,255,.08);
+  --line-strong: rgba(255,255,255,.16);
+  --text-1:#EAF0F7;
+  --text-2:#9AA7BD;
+  --text-3:#677289;
+  --amber:#FFB020;
+  --teal:#2DD4BF;
+  --container:1180px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--bg-deep);color:var(--text-1);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:2px;}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+section{position:relative;padding:100px 0;}
+@media (max-width:640px){section{padding:68px 0;}}
+
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.15;letter-spacing:-0.01em;color:var(--text-1);}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;letter-spacing:.12em;color:var(--amber);display:inline-flex;align-items:center;gap:2px;margin-bottom:16px;}
+.eyebrow::before{content:'[';opacity:.55;}
+.eyebrow::after{content:']';opacity:.55;}
+.eyebrow.teal{color:var(--teal);}
+
+.section-head{max-width:640px;margin-bottom:56px;}
+.section-head h2{font-size:clamp(28px,4vw,40px);margin-bottom:16px;}
+.section-head p{color:var(--text-2);font-size:16.5px;}
+.section-head.center{margin-inline:auto;text-align:center;}
+
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(circle at 50% 0%, black, transparent 75%);
+  mask-image:radial-gradient(circle at 50% 0%, black, transparent 75%);
+}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:6px;font-family:'Space Grotesk';font-weight:600;font-size:15px;transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease, color .25s ease;white-space:nowrap;}
+.btn svg{width:18px;height:18px;}
+.btn-primary{background:var(--amber);color:#1A1304;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(255,176,32,.55);}
+.btn-outline{border:1.5px solid var(--line-strong);color:var(--text-1);}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal);}
+.btn-sm{padding:11px 20px;font-size:13.5px;}
+.btn-block{width:100%;justify-content:center;}
+
+/* ---------- Header ---------- */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:background .3s ease, border-color .3s ease, padding .3s ease;border-bottom:1px solid transparent;}
+.site-header.is-scrolled{background:rgba(10,15,26,.86);backdrop-filter:blur(10px);border-bottom-color:var(--line);padding:14px 0;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.brand{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:34px;height:34px;color:var(--amber);flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text strong{font-family:'Space Grotesk';font-size:18px;font-weight:700;}
+.brand-text span{font-family:'IBM Plex Mono';font-size:9.5px;color:var(--text-3);letter-spacing:.12em;}
+
+.site-nav{display:flex;align-items:center;gap:30px;}
+.nav-link{font-size:14.5px;color:var(--text-2);transition:color .2s ease;}
+.nav-link:hover{color:var(--text-1);}
+.header-actions{display:flex;align-items:center;gap:16px;}
+.nav-toggle{display:none;width:44px;height:44px;position:relative;flex-shrink:0;}
+.nav-toggle span{position:absolute;left:11px;right:11px;height:2px;background:var(--text-1);transition:transform .25s ease, opacity .25s ease;}
+.nav-toggle span:nth-child(1){top:15px;}
+.nav-toggle span:nth-child(2){top:21px;}
+.nav-toggle span:nth-child(3){top:27px;}
+.nav-toggle.is-active span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle.is-active span:nth-child(2){opacity:0;}
+.nav-toggle.is-active span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+@media (max-width:860px){
+  .site-nav{position:fixed;top:0;right:0;height:100vh;width:280px;background:var(--bg-panel);flex-direction:column;align-items:flex-start;padding:100px 32px 40px;gap:28px;transform:translateX(100%);transition:transform .35s ease;border-left:1px solid var(--line);overflow-y:auto;}
+  .site-nav.is-open{transform:translateX(0);}
+  .nav-toggle{display:block;}
+  .header-actions .btn{display:none;}
+  .site-nav .btn-primary{display:inline-flex;margin-top:8px;}
+}
+
+/* ---------- Hero ---------- */
+.hero{padding-top:172px;padding-bottom:76px;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
+@media (max-width:980px){
+  .hero{padding-top:140px;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{order:-1;max-width:360px;margin:0 auto 12px;}
+}
+.hero h1{font-size:clamp(34px,5vw,55px);margin-bottom:22px;}
+.hero h1 .accent{color:var(--amber);}
+.hero-lead{font-size:18px;color:var(--text-2);max-width:520px;margin-bottom:34px;}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+
+.hero-visual{position:relative;display:flex;justify-content:center;}
+.hero-visual::before{content:'';position:absolute;width:420px;height:420px;background:radial-gradient(circle, rgba(255,176,32,.16), transparent 70%);filter:blur(8px);z-index:0;}
+.hero-visual::after{content:'';position:absolute;right:-10px;bottom:-10px;width:300px;height:300px;background:radial-gradient(circle, rgba(45,212,191,.15), transparent 70%);filter:blur(8px);z-index:0;}
+.hero-schematic{position:relative;z-index:1;width:100%;max-width:480px;}
+
+.flow-line{fill:none;}
+.flow-line.amber{stroke:rgba(255,176,32,.55);stroke-width:1.6;stroke-dasharray:5 7;animation:flow 1.6s linear infinite;}
+.flow-line.teal{stroke:rgba(45,212,191,.55);stroke-width:1.6;stroke-dasharray:5 7;animation:flow 1.6s linear infinite;}
+@keyframes flow{to{stroke-dashoffset:-24;}}
+
+.node-bg{fill:var(--bg-panel);stroke-width:1.5;}
+.node.amber .node-bg{stroke:rgba(255,176,32,.45);}
+.node.teal .node-bg{stroke:rgba(45,212,191,.45);}
+.node-pulse{fill:none;stroke-width:1.4;transform-box:fill-box;transform-origin:center;animation:pulsering 2.6s ease-out infinite;}
+.node.amber .node-pulse{stroke:var(--amber);}
+.node.teal .node-pulse{stroke:var(--teal);}
+@keyframes pulsering{0%{transform:scale(.82);opacity:.55;}75%{transform:scale(1.2);opacity:0;}100%{opacity:0;}}
+.node-icon.amber{color:var(--amber);}
+.node-icon.teal{color:var(--teal);}
+.node-icon path,.node-icon line,.node-icon rect,.node-icon circle,.node-icon polyline{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.node-icon .dot{fill:currentColor;stroke:none;}
+.node-label{font-family:'IBM Plex Mono';font-size:11px;fill:var(--text-3);text-anchor:middle;letter-spacing:.04em;}
+.hub-circle{fill:var(--bg-panel-2);stroke:var(--line-strong);stroke-width:1.5;}
+.hub-icon path,.hub-icon line,.hub-icon circle{fill:none;stroke:var(--text-1);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.hub-label{font-family:'Space Grotesk';font-size:13px;font-weight:700;fill:var(--text-1);text-anchor:middle;}
+.hub-sub{font-family:'IBM Plex Mono';font-size:8.5px;fill:var(--text-3);text-anchor:middle;letter-spacing:.08em;}
+
+/* generic icon helper */
+.icon{width:30px;height:30px;}
+.icon path,.icon line,.icon rect,.icon circle,.icon polyline,.icon polygon{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.icon .dot{fill:currentColor;stroke:none;}
+
+/* ---------- Catalog ---------- */
+.catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media (max-width:980px){.catalog-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:640px){.catalog-grid{grid-template-columns:1fr;}}
+
+.card-service{--accent:var(--amber);--accent-soft:rgba(255,176,32,.12);--accent-ink:#1A1304;background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:30px 26px;display:flex;flex-direction:column;transition:transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;}
+.card-service:hover{transform:translateY(-6px) scale(1.03);border-color:var(--accent);background:var(--bg-panel-2);box-shadow:0 20px 44px -16px rgba(0,0,0,.5);}
+.card-service.accent-teal{--accent:var(--teal);--accent-soft:rgba(45,212,191,.12);--accent-ink:#042722;}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.card-code{font-family:'IBM Plex Mono';font-size:12px;color:var(--accent);letter-spacing:.06em;padding-top:6px;}
+.card-icon-frame{position:relative;width:60px;height:60px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);border-radius:8px;color:var(--accent);}
+.card-icon-frame::before,.card-icon-frame::after{content:'';position:absolute;width:13px;height:13px;border-color:var(--accent);}
+.card-icon-frame::before{top:-5px;left:-5px;border-top:2px solid;border-left:2px solid;}
+.card-icon-frame::after{bottom:-5px;right:-5px;border-bottom:2px solid;border-right:2px solid;}
+.card-icon-frame .icon{width:30px;height:30px;}
+
+.card-service h3{font-size:19px;margin-bottom:10px;}
+.card-service p{color:var(--text-2);font-size:14.5px;margin-bottom:18px;}
+.card-features{display:flex;flex-direction:column;gap:9px;margin-bottom:26px;}
+.card-features li{display:flex;gap:10px;font-size:13.5px;color:var(--text-2);align-items:flex-start;}
+.card-features li::before{content:'';width:6px;height:6px;margin-top:6px;background:var(--accent);flex-shrink:0;border-radius:1px;transform:rotate(45deg);}
+.card-cta{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:700;font-family:'Space Grotesk';color:var(--accent-ink);background:var(--accent);width:100%;padding:14px 18px;border-radius:7px;transition:transform .25s ease, box-shadow .25s ease, filter .2s ease;}
+.card-cta svg{width:16px;height:16px;transition:transform .2s ease;}
+.card-cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px var(--accent);filter:brightness(1.07);}
+.card-cta:hover svg{transform:translateX(3px);}
+
+.card-service.placeholder{background:transparent;border:1.5px dashed var(--line-strong);align-items:center;text-align:center;justify-content:center;}
+.card-service.placeholder .card-icon-frame{background:transparent;border:1.5px dashed var(--line-strong);margin:0 auto 20px;}
+.card-service.placeholder .card-icon-frame::before,.card-service.placeholder .card-icon-frame::after{display:none;}
+.card-service.placeholder h3{font-size:17px;}
+.card-service.placeholder p{font-size:14px;margin-bottom:22px;}
+.card-service.placeholder:hover{border-color:var(--amber);transform:translateY(-6px) scale(1.02);box-shadow:0 20px 44px -16px rgba(0,0,0,.5);}
+
+/* ---------- Process ---------- */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+@media (max-width:900px){.process-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:540px){.process-grid{grid-template-columns:1fr;}}
+.process-step{position:relative;padding-top:8px;}
+.process-step .step-no{font-family:'IBM Plex Mono';font-size:13px;color:var(--amber);margin-bottom:18px;display:block;}
+.process-step h3{font-size:18px;margin-bottom:10px;}
+.process-step p{color:var(--text-2);font-size:14px;}
+
+/* ---------- Diferenciais ---------- */
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+@media (max-width:900px){.diff-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.diff-grid{grid-template-columns:1fr;}}
+.diff-item{background:var(--bg-panel);padding:34px 30px;display:flex;flex-direction:column;gap:14px;}
+.diff-item .icon{color:var(--teal);width:28px;height:28px;}
+.diff-item h3{font-size:16px;}
+.diff-item p{color:var(--text-2);font-size:13.5px;}
+
+/* ---------- Testimonials ---------- */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media (max-width:900px){.testi-grid{grid-template-columns:1fr;}}
+.testi-card{background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:30px;}
+.testi-card .quote-mark{font-family:'Space Grotesk';font-size:38px;color:var(--amber);line-height:1;margin-bottom:8px;display:block;}
+.testi-card p{color:var(--text-2);font-size:14.5px;margin-bottom:24px;}
+.testi-author strong{display:block;font-size:14.5px;font-family:'Space Grotesk';}
+.testi-author span{font-size:12.5px;color:var(--text-3);}
+
+/* ---------- Contact ---------- */
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+.contact-info{background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:34px;}
+.contact-info h3{font-size:18px;margin-bottom:24px;}
+.contact-row{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;}
+.contact-row .icon{color:var(--amber);width:22px;height:22px;flex-shrink:0;margin-top:2px;}
+.contact-row strong{display:block;font-size:14.5px;margin-bottom:3px;}
+.contact-row span{font-size:13.5px;color:var(--text-2);}
+.service-area{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;padding-top:26px;border-top:1px solid var(--line);}
+.area-tag{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--text-2);border:1px solid var(--line-strong);padding:5px 11px;border-radius:20px;}
+
+.contact-form{background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:34px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+@media (max-width:560px){.form-row{grid-template-columns:1fr;}}
+.field label{display:block;font-size:12.5px;color:var(--text-2);margin-bottom:7px;font-family:'IBM Plex Mono';letter-spacing:.02em;}
+.field input,.field select,.field textarea{width:100%;background:var(--bg-deep);border:1px solid var(--line-strong);color:var(--text-1);padding:12px 14px;border-radius:6px;font-family:'Inter';font-size:16px;transition:border-color .2s ease;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal);}
+.field-full{margin-bottom:18px;}
+.field textarea{resize:vertical;min-height:100px;}
+.form-note{font-size:12.5px;color:var(--text-3);margin-top:14px;text-align:center;}
+
+/* ---------- Footer ---------- */
+.site-footer{border-top:1px solid var(--line);padding:64px 0 32px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;margin-bottom:48px;}
+@media (max-width:900px){.footer-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.footer-grid{grid-template-columns:1fr;}}
+.footer-brand .brand{margin-bottom:6px;}
+.footer-brand p{color:var(--text-2);font-size:13.5px;margin-top:14px;max-width:280px;}
+.footer-col h4{font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:.08em;color:var(--text-3);margin-bottom:18px;}
+.footer-col ul li{margin-bottom:11px;}
+.footer-col a{font-size:14px;color:var(--text-2);transition:color .2s ease;}
+.footer-col a:hover{color:var(--text-1);}
+.footer-col span{font-size:13.5px;color:var(--text-2);}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:28px;border-top:1px solid var(--line);font-size:12.5px;color:var(--text-3);}
+
+/* ---------- Botões flutuantes (WhatsApp + Instagram) ---------- */
+.float-stack{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));right:calc(22px + env(safe-area-inset-right));z-index:200;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.float-btn{position:relative;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px -6px rgba(0,0,0,.55);transition:transform .25s ease, box-shadow .25s ease;}
+.float-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px -8px rgba(0,0,0,.6);}
+.float-btn .icon{width:26px;height:26px;}
+.float-btn.wa{background:#25D366;color:#0A2417;}
+.float-btn.ig{background:radial-gradient(circle at 30% 110%, #FEDA75 0%, #FA7E1E 25%, #D62976 50%, #962FBF 75%, #4F5BD5 100%);color:#FFFFFF;}
+.float-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:pulsering 2.2s ease-out infinite;}
+@media (max-width:480px){
+  .float-stack{gap:12px;}
+  .float-btn{width:52px;height:52px;}
+  .float-btn .icon{width:23px;height:23px;}
+}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.is-visible{opacity:1;transform:none;}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+  .reveal{opacity:1;transform:none;}
+}
+
+/* Em telas de toque, os efeitos de hover não devem ficar "travados" após um toque */
+@media (hover:none) and (pointer:coarse){
+  .card-service:hover{transform:none;border-color:var(--line);background:var(--bg-panel);box-shadow:none;}
+  .card-service.placeholder:hover{transform:none;border-color:var(--line-strong);box-shadow:none;}
+  .card-cta:hover{transform:none;box-shadow:none;filter:none;}
+  .btn-primary:hover{transform:none;box-shadow:none;}
+  .btn-outline:hover{border-color:var(--line-strong);color:var(--text-1);}
+  .card-service:active,.card-service.placeholder:active{transform:scale(.985);}
+  .card-cta:active,.btn:active{transform:scale(.97);}
+  .float-btn:hover{transform:none;box-shadow:0 10px 28px -6px rgba(0,0,0,.55);}
+  .float-btn:active{transform:scale(.93);}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+
+<!-- ============ ICON LIBRARY (hidden, reused via <use>) ============ -->
+<svg style="display:none" aria-hidden="true">
+<defs>
+
+<symbol id="icon-camera" viewBox="0 0 48 48">
+  <rect x="6" y="16" width="22" height="14" rx="3"/>
+  <rect x="28" y="18" width="10" height="10" rx="2"/>
+  <circle class="dot" cx="40" cy="14" r="1.6"/>
+  <path d="M17 30 L17 38 L9 38"/>
+  <line x1="9" y1="38" x2="9" y2="42"/>
+</symbol>
+
+<symbol id="icon-gate" viewBox="0 0 48 48">
+  <line x1="6" y1="8" x2="6" y2="40"/>
+  <line x1="42" y1="8" x2="42" y2="40"/>
+  <line x1="2" y1="40" x2="46" y2="40"/>
+  <rect x="10" y="14" width="26" height="20" rx="1"/>
+  <line x1="10" y1="20" x2="36" y2="20"/>
+  <line x1="10" y1="27" x2="36" y2="27"/>
+  <circle cx="39" cy="36" r="2.2"/>
+</symbol>
+
+<symbol id="icon-fence" viewBox="0 0 48 48">
+  <line x1="9" y1="10" x2="9" y2="40"/>
+  <line x1="24" y1="6" x2="24" y2="40"/>
+  <line x1="39" y1="12" x2="39" y2="40"/>
+  <line x1="9" y1="16" x2="39" y2="16"/>
+  <line x1="9" y1="24" x2="39" y2="24"/>
+  <line x1="9" y1="32" x2="39" y2="32"/>
+  <polyline points="32,2 28,11 33,11 27,20"/>
+</symbol>
+
+<symbol id="icon-face" viewBox="0 0 48 48">
+  <path d="M6 14 V6 H14"/>
+  <path d="M34 6 H42 V14"/>
+  <path d="M42 34 V42 H34"/>
+  <path d="M14 42 H6 V34"/>
+  <circle cx="24" cy="22" r="9"/>
+  <circle class="dot" cx="20.5" cy="20" r="1.3"/>
+  <circle class="dot" cx="27.5" cy="20" r="1.3"/>
+  <path d="M19 26 Q24 30 29 26"/>
+  <line x1="9" y1="24" x2="39" y2="24" stroke-dasharray="3 3" opacity="0.6"/>
+</symbol>
+
+<symbol id="icon-intercom" viewBox="0 0 48 48">
+  <rect x="14" y="4" width="20" height="40" rx="3"/>
+  <circle cx="24" cy="13" r="4"/>
+  <line x1="18" y1="22" x2="30" y2="22"/>
+  <line x1="18" y1="27" x2="30" y2="27"/>
+  <circle class="dot" cx="24" cy="34" r="2"/>
+</symbol>
+
+<symbol id="icon-home" viewBox="0 0 48 48">
+  <path d="M8 24 L24 10 L40 24"/>
+  <path d="M12 22 V40 H36 V22"/>
+  <line x1="20" y1="40" x2="20" y2="30"/>
+  <line x1="28" y1="40" x2="28" y2="30"/>
+  <path d="M30 6 a8 8 0 0 1 8 8"/>
+  <path d="M33 9 a4 4 0 0 1 4 4"/>
+</symbol>
+
+<symbol id="icon-tools" viewBox="0 0 48 48">
+  <circle cx="24" cy="24" r="9"/>
+  <circle cx="24" cy="24" r="3"/>
+  <line x1="33" y1="24" x2="37" y2="24"/>
+  <line x1="30.4" y1="30.4" x2="33.2" y2="33.2"/>
+  <line x1="24" y1="33" x2="24" y2="37"/>
+  <line x1="17.6" y1="30.4" x2="14.8" y2="33.2"/>
+  <line x1="15" y1="24" x2="11" y2="24"/>
+  <line x1="17.6" y1="17.6" x2="14.8" y2="14.8"/>
+  <line x1="24" y1="15" x2="24" y2="11"/>
+  <line x1="30.4" y1="17.6" x2="33.2" y2="14.8"/>
+</symbol>
+
+<symbol id="icon-plus" viewBox="0 0 48 48">
+  <circle cx="24" cy="24" r="18"/>
+  <line x1="24" y1="15" x2="24" y2="33"/>
+  <line x1="15" y1="24" x2="33" y2="24"/>
+</symbol>
+
+<symbol id="icon-shield" viewBox="0 0 48 48">
+  <path d="M24 4 L40 11 V24 C40 34 33 41 24 44 C15 41 8 34 8 24 V11 Z"/>
+  <polyline points="17,24 22,29 32,18"/>
+</symbol>
+
+<symbol id="icon-clock" viewBox="0 0 48 48">
+  <circle cx="24" cy="24" r="18"/>
+  <line x1="24" y1="24" x2="24" y2="13"/>
+  <line x1="24" y1="24" x2="32" y2="28"/>
+</symbol>
+
+<symbol id="icon-star" viewBox="0 0 48 48">
+  <path d="M24 6 L29 19 L43 19 L32 28 L36 42 L24 33 L12 42 L16 28 L5 19 L19 19 Z"/>
+</symbol>
+
+<symbol id="icon-check" viewBox="0 0 48 48">
+  <circle cx="24" cy="24" r="18"/>
+  <polyline points="16,25 22,31 33,18"/>
+</symbol>
+
+<symbol id="icon-building" viewBox="0 0 48 48">
+  <rect x="10" y="14" width="14" height="28"/>
+  <rect x="24" y="6" width="14" height="36"/>
+  <line x1="14" y1="20" x2="18" y2="20"/>
+  <line x1="14" y1="26" x2="18" y2="26"/>
+  <line x1="14" y1="32" x2="18" y2="32"/>
+  <line x1="28" y1="14" x2="32" y2="14"/>
+  <line x1="28" y1="20" x2="32" y2="20"/>
+  <line x1="28" y1="26" x2="32" y2="26"/>
+  <line x1="28" y1="32" x2="32" y2="32"/>
+</symbol>
+
+<symbol id="icon-clipboard" viewBox="0 0 48 48">
+  <rect x="12" y="6" width="24" height="36" rx="3"/>
+  <rect x="18" y="3" width="12" height="6" rx="2"/>
+  <line x1="17" y1="18" x2="31" y2="18"/>
+  <line x1="17" y1="24" x2="31" y2="24"/>
+  <line x1="17" y1="30" x2="25" y2="30"/>
+</symbol>
+
+<symbol id="icon-chat" viewBox="0 0 48 48">
+  <rect x="6" y="8" width="36" height="26" rx="8"/>
+  <polygon points="14,34 14,42 22,34"/>
+  <circle class="dot" cx="17" cy="21" r="2"/>
+  <circle class="dot" cx="24" cy="21" r="2"/>
+  <circle class="dot" cx="31" cy="21" r="2"/>
+</symbol>
+
+<symbol id="icon-instagram" viewBox="0 0 48 48">
+  <rect x="6" y="6" width="36" height="36" rx="10"/>
+  <circle cx="24" cy="24" r="9"/>
+  <circle class="dot" cx="34" cy="14" r="2"/>
+</symbol>
+
+<symbol id="icon-arrow" viewBox="0 0 24 24">
+  <line x1="4" y1="12" x2="19" y2="12"/>
+  <polyline points="13,6 19,12 13,18"/>
+</symbol>
+
+</defs>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="#inicio" class="brand">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="16" y1="9" x2="16" y2="14" stroke="currentColor" stroke-width="2"/>
+        <line x1="16" y1="18" x2="16" y2="23" stroke="currentColor" stroke-width="2"/>
+        <line x1="9" y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+        <line x1="18" y1="16" x2="23" y2="16" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="16" r="3" fill="currentColor"/>
+      </svg>
+      <span class="brand-text">
+        <strong>Interline</strong>
+        <span>AUTOMATIZADORA</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-link" href="#inicio">Início</a>
+      <a class="nav-link" href="#catalogo">Catálogo</a>
+      <a class="nav-link" href="#processo">Como funciona</a>
+      <a class="nav-link" href="#diferenciais">Diferenciais</a>
+      <a class="nav-link" href="#depoimentos">Depoimentos</a>
+      <a class="nav-link" href="#contato">Contato</a>
+      <a class="btn btn-primary btn-sm" href="#" data-wa-msg="Olá! Gostaria de solicitar um orçamento com a Interline." target="_blank" rel="noopener">
+        <svg class="icon"><use href="#icon-chat"></use></svg> WhatsApp
+      </a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">AUTOMAÇÃO E SEGURANÇA ELETRÔNICA</span>
+      <h1>Sua casa e seu negócio, <span class="accent">conectados e protegidos</span>.</h1>
+      <p class="hero-lead">A Interline projeta, instala e mantém sistemas de câmeras, motorização de portões de ferro, cerca elétrica e reconhecimento facial — tudo funcionando em rede, sob o seu controle.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#" data-wa-msg="Olá! Gostaria de solicitar um orçamento com a Interline." target="_blank" rel="noopener">
+          <svg class="icon"><use href="#icon-chat"></use></svg> Falar no WhatsApp
+        </a>
+        <a class="btn btn-outline" href="#catalogo">Ver catálogo de serviços</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <svg class="hero-schematic" viewBox="0 0 560 560" aria-hidden="true">
+        <!-- connector lines -->
+        <polyline class="flow-line amber" points="280,280 120,280 120,140" style="animation-delay:0s"/>
+        <polyline class="flow-line amber" points="280,280 440,280 440,140" style="animation-delay:.3s"/>
+        <polyline class="flow-line teal" points="280,280 120,280 120,420" style="animation-delay:.6s"/>
+        <polyline class="flow-line teal" points="280,280 440,280 440,420" style="animation-delay:.9s"/>
+
+        <!-- node: gate (top-left, amber) -->
+        <g class="node amber">
+          <circle class="node-pulse" cx="120" cy="140" r="40" style="animation-delay:0s"/>
+          <circle class="node-bg" cx="120" cy="140" r="38"/>
+          <svg class="node-icon amber" x="100" y="120" width="40" height="40" viewBox="0 0 48 48"><use href="#icon-gate"></use></svg>
+          <text class="node-label" x="120" y="198">MOTOR</text>
+        </g>
+
+        <!-- node: fence (top-right, amber) -->
+        <g class="node amber">
+          <circle class="node-pulse" cx="440" cy="140" r="40" style="animation-delay:.6s"/>
+          <circle class="node-bg" cx="440" cy="140" r="38"/>
+          <svg class="node-icon amber" x="420" y="120" width="40" height="40" viewBox="0 0 48 48"><use href="#icon-fence"></use></svg>
+          <text class="node-label" x="440" y="198">CERCA</text>
+        </g>
+
+        <!-- node: camera (bottom-left, teal) -->
+        <g class="node teal">
+          <circle class="node-pulse" cx="120" cy="420" r="40" style="animation-delay:1.2s"/>
+          <circle class="node-bg" cx="120" cy="420" r="38"/>
+          <svg class="node-icon teal" x="100" y="400" width="40" height="40" viewBox="0 0 48 48"><use href="#icon-camera"></use></svg>
+          <text class="node-label" x="120" y="478">CFTV</text>
+        </g>
+
+        <!-- node: face (bottom-right, teal) -->
+        <g class="node teal">
+          <circle class="node-pulse" cx="440" cy="420" r="40" style="animation-delay:1.8s"/>
+          <circle class="node-bg" cx="440" cy="420" r="38"/>
+          <svg class="node-icon teal" x="420" y="400" width="40" height="40" viewBox="0 0 48 48"><use href="#icon-face"></use></svg>
+          <text class="node-label" x="440" y="478">FACIAL</text>
+        </g>
+
+        <!-- hub -->
+        <circle class="hub-circle" cx="280" cy="280" r="48"/>
+        <svg class="hub-icon" x="256" y="246" width="48" height="48" viewBox="0 0 48 48"><use href="#icon-home"></use></svg>
+        <text class="hub-sub" x="280" y="338">CONTROLE CENTRAL</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATALOGO ============ -->
+<section id="catalogo">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">CATÁLOGO DE SERVIÇOS</span>
+      <h2>Soluções completas em segurança eletrônica e automação</h2>
+      <p>Cada módulo pode ser instalado de forma independente ou combinado em um único sistema integrado. A Interline cuida do projeto, da instalação e da manutenção, do início ao fim.</p>
+    </div>
+
+    <div class="catalog-grid">
+
+      <!-- MOD-01 CFTV -->
+      <article class="card-service accent-teal reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-camera"></use></svg></div>
+          <span class="card-code">MOD-01 / CFTV</span>
+        </div>
+        <h3>Câmeras de Segurança</h3>
+        <p>Sistemas de monitoramento com câmeras Full HD e 4K, gravação local ou em nuvem e visualização ao vivo direto do celular.</p>
+        <ul class="card-features">
+          <li>Câmeras internas, externas e infravermelho noturno</li>
+          <li>Acesso remoto pelo aplicativo, em qualquer lugar</li>
+          <li>Gravação contínua 24h com backup</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para instalação de câmeras de segurança (CFTV)." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+      <!-- MOD-02 MOTOR PARA PORTÃO DE FERRO -->
+      <article class="card-service reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-gate"></use></svg></div>
+          <span class="card-code">MOD-02 / MOTOR</span>
+        </div>
+        <h3>Motor para Portão de Ferro</h3>
+        <p>Instalamos motor no seu portão de ferro deslizante ou basculante já existente, deixando a abertura e o fechamento automáticos sem precisar trocar o portão.</p>
+        <ul class="card-features">
+          <li>Compatível com portões de ferro deslizantes e basculantes</li>
+          <li>Acionamento por controle remoto, aplicativo ou botoeira</li>
+          <li>Reforço e ajuste da estrutura quando necessário</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para instalação de motor no meu portão de ferro." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+      <!-- MOD-03 CERCA -->
+      <article class="card-service reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-fence"></use></svg></div>
+          <span class="card-code">MOD-03 / PERIM</span>
+        </div>
+        <h3>Cerca Elétrica</h3>
+        <p>Cercas elétricas perimetrais com central de choque homologada, sirene própria e sensor de corte de fio para reforçar a proteção do imóvel.</p>
+        <ul class="card-features">
+          <li>Central com certificação de segurança</li>
+          <li>Sirene e alerta sonoro em caso de violação</li>
+          <li>Integração com a central de monitoramento</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para instalação de cerca elétrica." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+      <!-- MOD-04 FACIAL -->
+      <article class="card-service accent-teal reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-face"></use></svg></div>
+          <span class="card-code">MOD-04 / ACESSO</span>
+        </div>
+        <h3>Autenticador Facial</h3>
+        <p>Controle de acesso por reconhecimento facial e biometria, ideal para condomínios, empresas e residências com fluxo de pessoas.</p>
+        <ul class="card-features">
+          <li>Cadastro praticamente ilimitado de usuários</li>
+          <li>Reconhecimento em menos de 1 segundo</li>
+          <li>Histórico completo de entradas e saídas</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para instalação de autenticador facial / biometria." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+      <!-- MOD-05 INTERFONE -->
+      <article class="card-service accent-teal reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-intercom"></use></svg></div>
+          <span class="card-code">MOD-05 / VOZ-VÍDEO</span>
+        </div>
+        <h3>Interfone e Videoporteiro</h3>
+        <p>Interfones e videoporteiros integrados ao portão e às câmeras, para identificar e liberar visitantes de qualquer lugar.</p>
+        <ul class="card-features">
+          <li>Atendimento de visitantes pelo aplicativo</li>
+          <li>Integração com fechaduras eletrônicas</li>
+          <li>Imagem e voz em tempo real</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para interfone / videoporteiro." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+
+      <!-- MOD-07 MANUTENÇÃO -->
+      <article class="card-service reveal">
+        <div class="card-top">
+          <div class="card-icon-frame"><svg class="icon"><use href="#icon-tools"></use></svg></div>
+          <span class="card-code">MOD-06 / SUPORTE</span>
+        </div>
+        <h3>Manutenção e Suporte Elétrico</h3>
+        <p>Manutenção preventiva e corretiva dos sistemas instalados, além de serviços elétricos gerais para manter tudo funcionando.</p>
+        <ul class="card-features">
+          <li>Planos de manutenção periódica</li>
+          <li>Atendimento de urgência</li>
+          <li>Revisão completa do sistema instalado</li>
+        </ul>
+        <a class="card-cta" href="#" data-wa-msg="Olá! Gostaria de um orçamento para manutenção e suporte elétrico." target="_blank" rel="noopener">
+          Solicitar orçamento <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </a>
+      </article>
+
+      <!-- PLACEHOLDER: espaço para novos serviços -->
+      <!-- Para adicionar um novo serviço, duplique um bloco <article class="card-service"> e ajuste código, ícone, título, descrição e link do WhatsApp. -->
+      <article class="card-service placeholder reveal">
+        <div class="card-icon-frame"><svg class="icon"><use href="#icon-plus"></use></svg></div>
+        <h3>Seu projeto não está na lista?</h3>
+        <p>Trabalhamos sob medida. Conte o que você precisa e montamos uma solução personalizada de automação ou segurança.</p>
+        <a class="btn btn-primary btn-sm" href="#" data-wa-msg="Olá! Tenho um projeto de automação/segurança que não está no catálogo, gostaria de conversar." target="_blank" rel="noopener">
+          Conversar no WhatsApp
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section id="processo">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow teal">COMO FUNCIONA</span>
+      <h2>Do primeiro contato à instalação concluída</h2>
+      <p>Um processo simples e transparente, pensado para você saber exatamente o que esperar em cada etapa.</p>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <span class="step-no">01 / CONTATO</span>
+        <h3>Você fala com a gente</h3>
+        <p>Envie uma mensagem pelo WhatsApp contando o que precisa: tipo de imóvel, serviço de interesse e prazo desejado.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="step-no">02 / VISITA TÉCNICA</span>
+        <h3>Avaliação e orçamento</h3>
+        <p>Avaliamos o local, indicamos o equipamento mais adequado e enviamos um orçamento detalhado, sem compromisso.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="step-no">03 / INSTALAÇÃO</span>
+        <h3>Execução do serviço</h3>
+        <p>Nossa equipe técnica instala todo o sistema com cuidado, testando cada equipamento antes da entrega.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="step-no">04 / SUPORTE</span>
+        <h3>Acompanhamento contínuo</h3>
+        <p>Após a instalação, oferecemos suporte e manutenção para garantir que tudo continue funcionando perfeitamente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAIS ============ -->
+<section id="diferenciais">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">POR QUE A INTERLINE</span>
+      <h2>Compromisso técnico em cada etapa do projeto</h2>
+      <p>Mais do que instalar equipamentos, cuidamos da segurança e da rotina de quem confia no nosso trabalho.</p>
+    </div>
+
+    <div class="diff-grid reveal">
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-shield"></use></svg>
+        <h3>Equipe técnica certificada</h3>
+        <p>Profissionais treinados e atualizados com as principais marcas de equipamentos do mercado.</p>
+      </div>
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-clock"></use></svg>
+        <h3>Atendimento rápido</h3>
+        <p>Da primeira mensagem à visita técnica, sem enrolação e com prazos combinados com você.</p>
+      </div>
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-star"></use></svg>
+        <h3>Equipamentos de qualidade</h3>
+        <p>Trabalhamos com marcas testadas, evitando retrabalho e problemas a curto prazo.</p>
+      </div>
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-check"></use></svg>
+        <h3>Garantia em todos os serviços</h3>
+        <p>Cada instalação sai com garantia de equipamento e de mão de obra, por escrito.</p>
+      </div>
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-clipboard"></use></svg>
+        <h3>Orçamento sem compromisso</h3>
+        <p>Você recebe o valor detalhado antes de decidir, sem letras pequenas nem custos escondidos.</p>
+      </div>
+      <div class="diff-item">
+        <svg class="icon"><use href="#icon-building"></use></svg>
+        <h3>Residencial e comercial</h3>
+        <p>Atendemos casas, condomínios, lojas, empresas e indústrias com o mesmo padrão técnico.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPOIMENTOS ============ -->
+<section id="depoimentos">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow teal">QUEM JÁ INSTALOU</span>
+      <h2>Clientes que confiam na Interline</h2>
+      <p>Alguns relatos de quem já teve seu projeto entregue pela nossa equipe.</p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p>A instalação da cerca elétrica e das câmeras foi rápida e bem explicada. Hoje me sinto muito mais tranquila em casa.</p>
+        <div class="testi-author">
+          <strong>Carla M.</strong>
+          <span>Águas Claras, DF</span>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p>O reconhecimento facial resolveu um problema antigo de controle de visitantes no condomínio. Suporte sempre presente quando precisamos.</p>
+        <div class="testi-author">
+          <strong>Roberto T.</strong>
+          <span>Síndico, Sobradinho/DF</span>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p>Automatizaram o portão da loja e integraram com o interfone. Equipe pontual e atenta aos detalhes do projeto.</p>
+        <div class="testi-author">
+          <strong>Loja Vértice</strong>
+          <span>Taguatinga, DF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section id="contato">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">FALE COM A GENTE</span>
+      <h2>Vamos planejar a segurança do seu espaço?</h2>
+      <p>Conte o que você precisa e nossa equipe retorna com um orçamento sem compromisso.</p>
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-info reveal">
+        <h3>Informações de contato</h3>
+
+        <div class="contact-row">
+          <svg class="icon"><use href="#icon-chat"></use></svg>
+          <div>
+            <strong>WhatsApp / Telefone</strong>
+            <span>(61) 99133-1033</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <svg class="icon"><use href="#icon-clipboard"></use></svg>
+          <div>
+            <strong>E-mail</strong>
+            <span>automatizadorainterline@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <svg class="icon"><use href="#icon-clock"></use></svg>
+          <div>
+            <strong>Horário de atendimento</strong>
+            <span>Segunda a sábado, 8h às 18h · Suporte emergencial 24h</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <svg class="icon"><use href="#icon-building"></use></svg>
+          <div>
+            <strong>Área de atendimento</strong>
+            <span>Brasília e região (DF)</span>
+          </div>
+        </div>
+
+        <div class="service-area">
+          <span class="area-tag">Brasília</span>
+          <span class="area-tag">Águas Claras</span>
+          <span class="area-tag">Taguatinga</span>
+          <span class="area-tag">Sobradinho</span>
+          <span class="area-tag">Ceilândia</span>
+          <span class="area-tag">Guará</span>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" id="contact-form">
+        <h3>Solicite seu orçamento</h3>
+        <div class="form-row">
+          <div class="field">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+          </div>
+          <div class="field">
+            <label for="telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(61) 90000-0000" required>
+          </div>
+        </div>
+        <div class="field field-full">
+          <label for="servico">Serviço de interesse</label>
+          <select id="servico" name="servico">
+            <option value="Câmeras de segurança (CFTV)">Câmeras de segurança (CFTV)</option>
+            <option value="Portão automático">Portão automático</option>
+            <option value="Cerca elétrica">Cerca elétrica</option>
+            <option value="Autenticador facial">Autenticador facial</option>
+            <option value="Interfone / Videoporteiro">Interfone / Videoporteiro</option>
+            <option value="Automação residencial">Automação residencial</option>
+            <option value="Manutenção / Suporte">Manutenção / Suporte</option>
+            <option value="Outro / não listado">Outro / não listado</option>
+          </select>
+        </div>
+        <div class="field field-full">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" placeholder="Conte um pouco sobre o local e o que você precisa..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <svg class="icon"><use href="#icon-chat"></use></svg> Enviar via WhatsApp
+        </button>
+        <p class="form-note">Ao enviar, abriremos o WhatsApp com sua mensagem já preenchida.</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#inicio" class="brand">
+          <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="2" y="2" width="28" height="28" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="9" x2="16" y2="14" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="18" x2="16" y2="23" stroke="currentColor" stroke-width="2"/>
+            <line x1="9" y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+            <line x1="18" y1="16" x2="23" y2="16" stroke="currentColor" stroke-width="2"/>
+            <circle cx="16" cy="16" r="3" fill="currentColor"/>
+          </svg>
+          <span class="brand-text">
+            <strong>Interline</strong>
+            <span>AUTOMATIZADORA</span>
+          </span>
+        </a>
+        <p>Automação e segurança eletrônica, do projeto à manutenção. Câmeras, portões, cerca elétrica, biometria e muito mais, em um só lugar.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>NAVEGAÇÃO</h4>
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
+          <li><a href="#processo">Como funciona</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>SERVIÇOS</h4>
+        <ul>
+          <li><a href="#catalogo">Câmeras de segurança</a></li>
+          <li><a href="#catalogo">Motor para portão de ferro</a></li>
+          <li><a href="#catalogo">Cerca elétrica</a></li>
+          <li><a href="#catalogo">Autenticador facial</a></li>
+          <li><a href="#catalogo">Automação residencial</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CONTATO</h4>
+        <ul>  
+          <li><span>(61) 99133-1033</span></li>
+          <li><span>automatizadorainterline@gmail.com</span></li>
+          <li><span>Brasília e região, DF</span></li>
+          <li><a href="https://instagram.com/automatizadorainterline" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Automatizadora Interline. Todos os direitos reservados.</span>
+      <span>Automação e segurança eletrônica.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ BOTÕES FLUTUANTES ============ -->
+<div class="float-stack">
+  <a class="float-btn ig" href="https://instagram.com/automatizadorainterline" target="_blank" rel="noopener" aria-label="Seguir no Instagram">
+    <svg class="icon"><use href="#icon-instagram"></use></svg>
+  </a>
+  <a class="float-btn wa" href="#" data-wa-msg="Olá! Gostaria de saber mais sobre os serviços da Interline." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <span class="float-pulse" aria-hidden="true"></span>
+    <svg class="icon"><use href="#icon-chat"></use></svg>
+  </a>
+</div>
+
+<script>
+// ===================================================================
+// TROQUE AQUI: número de WhatsApp real da empresa (formato 55 + DDD + número, só dígitos)
+const WHATSAPP_NUMBER = "5561991331033";
+// ===================================================================
+
+function buildWaLink(message){
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  // preenche todos os links de WhatsApp com a mensagem certa
+  document.querySelectorAll("[data-wa-msg]").forEach(function(el){
+    el.setAttribute("href", buildWaLink(el.getAttribute("data-wa-msg")));
+  });
+
+  // formulário de contato -> abre WhatsApp com os dados preenchidos
+  var form = document.getElementById("contact-form");
+  if(form){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var nome = form.nome.value.trim();
+      var telefone = form.telefone.value.trim();
+      var servico = form.servico.value;
+      var mensagem = form.mensagem.value.trim();
+
+      var texto = "Olá! Meu nome é " + nome + ".";
+      if(servico) texto += " Tenho interesse em: " + servico + ".";
+      if(mensagem) texto += " " + mensagem;
+      if(telefone) texto += " (Telefone para contato: " + telefone + ")";
+
+      window.open(buildWaLink(texto), "_blank");
+    });
+  }
+
+  // menu mobile
+  var navToggle = document.getElementById("nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if(navToggle && nav){
+    navToggle.addEventListener("click", function(){
+      var open = nav.classList.toggle("is-open");
+      navToggle.classList.toggle("is-active");
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(){
+        nav.classList.remove("is-open");
+        navToggle.classList.remove("is-active");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  // header muda de aparência ao rolar a página
+  var header = document.getElementById("site-header");
+  window.addEventListener("scroll", function(){
+    if(window.scrollY > 12) header.classList.add("is-scrolled");
+    else header.classList.remove("is-scrolled");
+  });
+
+  // animação de revelação ao rolar
+  var revealEls = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15});
+    revealEls.forEach(function(el){ obs.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add("is-visible"); });
+  }
+
+});
+</script>
+
+</body>
+</html>
